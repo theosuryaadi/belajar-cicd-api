@@ -51,8 +51,13 @@ public class Products {
         // convert response body to string
         String responseBody = body.asString();
 
-        JsonPath jsonPath = response.jsonPath();
-        s = jsonPath.getJsonObject("rating[0].rate").toString();
+        // Hati-hati: Baris di bawah ini akan error kalau responnya bukan JSON (misal masih 403 HTML)
+        // Jadi sebaiknya ditaruh di dalam try-catch atau assert status code dulu
+        if (response.getStatusCode() == 200) {
+            JsonPath jsonPath = response.jsonPath();
+            s = jsonPath.getJsonObject("rating[0].rate").toString();
+        }
+
         assertEquals(s, rate);
     }
 
@@ -78,9 +83,12 @@ public class Products {
         httpRequest.body(requestParams.toJSONString());
         Response response = httpRequest.post("products");
         ResponseBody body = response.getBody();
-        JsonPath jsonPath = response.jsonPath();
-
-        s = jsonPath.getJsonObject("id").toString();
+        // Hati-hati: Baris di bawah ini akan error kalau responnya bukan JSON (misal masih 403 HTML)
+        // Jadi sebaiknya ditaruh di dalam try-catch atau assert status code dulu
+        if (response.getStatusCode() == 200) {
+            JsonPath jsonPath = response.jsonPath();
+            s = jsonPath.getJsonObject("id").toString();
+        }
 
         System.out.println(response.getStatusLine());
         System.out.println(body.asString());
@@ -145,9 +153,12 @@ public class Products {
         httpRequest.body(requestParams.toJSONString());
         response = httpRequest.delete("products/" + productNumber);
         ResponseBody body = response.getBody();
-        JsonPath jsonPath = response.jsonPath();
-
-        s = jsonPath.getJsonObject("id").toString();
+        // Hati-hati: Baris di bawah ini akan error kalau responnya bukan JSON (misal masih 403 HTML)
+        // Jadi sebaiknya ditaruh di dalam try-catch atau assert status code dulu
+        if (response.getStatusCode() == 200) {
+            JsonPath jsonPath = response.jsonPath();
+            s = jsonPath.getJsonObject("id").toString();
+        }
 
         System.out.println(response.getStatusLine());
         System.out.println(body.asString());
