@@ -91,21 +91,34 @@ public class Products {
 
     @When("I pass the url of products in the request with {}")
     public void iPassTheUrlOfProductsInTheRequestWithProductNumber(String productNumber) {
-        httpRequest = RestAssured.given();
+        // TAMBAHAN PENTING: Menyamar jadi Browser Chrome & set tipe data JSON
+        httpRequest = RestAssured.given()
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .header("Content-Type", "application/json")
+                .header("Accept", "*/*");
+
+        // Bagian ini tetap sama seperti kodemu
         requestParams.put("title", "test product");
         requestParams.put("price", 9.1);
         requestParams.put("description", "test description");
         requestParams.put("category", "test category");
         requestParams.put("image", "http://example.com");
+
         httpRequest.body(requestParams.toJSONString());
+
         response = httpRequest.put("products/" + productNumber);
+
+        // Debugging (Bagus, pertahankan ini)
         ResponseBody body = response.getBody();
-        JsonPath jsonPath = response.jsonPath();
+        System.out.println("Status Code: " + response.getStatusCode());
+        System.out.println("Response Body: " + body.asString());
 
-        s = jsonPath.getJsonObject("id").toString();
-
-        System.out.println(response.getStatusLine());
-        System.out.println(body.asString());
+        // Hati-hati: Baris di bawah ini akan error kalau responnya bukan JSON (misal masih 403 HTML)
+        // Jadi sebaiknya ditaruh di dalam try-catch atau assert status code dulu
+        if (response.getStatusCode() == 200) {
+            JsonPath jsonPath = response.jsonPath();
+            s = jsonPath.getJsonObject("id").toString();
+        }
     }
 
     @Given("I hit the url of delete products api endpoint")
