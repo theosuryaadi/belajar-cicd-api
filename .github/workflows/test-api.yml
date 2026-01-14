@@ -1,0 +1,24 @@
+name: Coba CI/CD Pertamaku
+
+# Kapan ini jalan? Saat ada kode baru di-push
+on: [push]
+
+jobs:
+  jalankan-tes:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Ambil kodingan dari repo
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Siapkan Java 17
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Jalankan perintah test (sama seperti di laptop)
+      - name: Run Test
+        run: mvn test
