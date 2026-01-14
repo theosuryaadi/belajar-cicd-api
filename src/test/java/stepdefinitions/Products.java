@@ -30,7 +30,11 @@ public class Products {
 
     @When("I pass the url of products in the request")
     public void i_pass_the_url_of_products_in_the_request() {
-        httpRequest = RestAssured.given();
+        // TAMBAHAN PENTING: Menyamar jadi Browser Chrome & set tipe data JSON
+        httpRequest = RestAssured.given()
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .header("Content-Type", "application/json")
+                .header("Accept", "*/*");
         response = httpRequest.get("products");
     }
 
@@ -55,7 +59,11 @@ public class Products {
     @Given("I hit the url of post products api endpoint")
     public void iHitTheUrlOfPostProductsApiEndpoint() {
         RestAssured.baseURI = "https://fakestoreapi.com/";
-        httpRequest = RestAssured.given();
+        // TAMBAHAN PENTING: Menyamar jadi Browser Chrome & set tipe data JSON
+        httpRequest = RestAssured.given()
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .header("Content-Type", "application/json")
+                .header("Accept", "*/*");
         requestParams = new JSONObject();
 
     }
@@ -129,7 +137,11 @@ public class Products {
 
     @When("I pass the url of delete products in the request with {}")
     public void iPassTheUrlOfDeleteProductsInTheRequestWithProductNumber(String productNumber) {
-        httpRequest = RestAssured.given();
+        // TAMBAHAN PENTING: Menyamar jadi Browser Chrome & set tipe data JSON
+        httpRequest = RestAssured.given()
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .header("Content-Type", "application/json")
+                .header("Accept", "*/*");
         httpRequest.body(requestParams.toJSONString());
         response = httpRequest.delete("products/" + productNumber);
         ResponseBody body = response.getBody();
