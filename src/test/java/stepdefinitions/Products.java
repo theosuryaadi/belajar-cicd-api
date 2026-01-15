@@ -25,25 +25,17 @@ public class Products {
 
     @Given("I hit the url of get products api endpoint")
     public void i_hit_the_url_of_get_products_api_endpoint() {
-//        RestAssured.baseURI = "https://fakestoreapi.com/";
-        RestAssured.baseURI = "https://reqres.in/";
+        RestAssured.baseURI = "https://fakestoreapi.com/";
     }
 
     @When("I pass the url of products in the request")
     public void i_pass_the_url_of_products_in_the_request() {
-        response = RestAssured.given()
-                // --- INI KUNCINYA ---
+        // TAMBAHAN PENTING: Menyamar jadi Browser Chrome & set tipe data JSON
+        httpRequest = RestAssured.given()
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-                .header("Accept", "*/*")
-                // --------------------
-                .baseUri("https://reqres.in")
-                .when()
-                .get("/api/users/2")
-                .then()
-                .log().all() // Biar kita bisa lihat isi errornya kalau gagal lagi
-                .extract().response();
-//        response = httpRequest.get("products");
-//        response = httpRequest.get("api/users");
+                .header("Content-Type", "application/json")
+                .header("Accept", "*/*");
+        response = httpRequest.get("products");
     }
 
     @Then("I receive the response code as {}")
@@ -63,8 +55,7 @@ public class Products {
         // Jadi sebaiknya ditaruh di dalam try-catch atau assert status code dulu
         if (response.getStatusCode() == 200) {
             JsonPath jsonPath = response.jsonPath();
-//            s = jsonPath.getJsonObject("rating[0].rate").toString();
-            s = jsonPath.getJsonObject("first_name").toString();
+            s = jsonPath.getJsonObject("rating[0].rate").toString();
         }
 
         assertEquals(s, rate);
@@ -72,8 +63,7 @@ public class Products {
 
     @Given("I hit the url of post products api endpoint")
     public void iHitTheUrlOfPostProductsApiEndpoint() {
-//        RestAssured.baseURI = "https://fakestoreapi.com/";
-        RestAssured.baseURI = "https://reqres.in/";
+        RestAssured.baseURI = "https://fakestoreapi.com/";
         // TAMBAHAN PENTING: Menyamar jadi Browser Chrome & set tipe data JSON
         httpRequest = RestAssured.given()
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
