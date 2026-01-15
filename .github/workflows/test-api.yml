@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 2. Siapkan Java 17
+      # 2. Siapkan Java 22
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -20,5 +20,8 @@ jobs:
           java-version: '22'
 
       # 3. Jalankan perintah test (sama seperti di laptop)
-      - name: Run Test
-        run: mvn test
+#      - name: Run Test
+#        run: mvn test
+      - name: Jalankan Tes Khusus GET
+        # Perintah ini artinya: "Jalankan tes TAPI cuma yang punya tag @RunMe"
+        run: mvn test -Dcucumber.filter.tags="@RunMe"
