@@ -31,13 +31,19 @@ public class Products {
 
     @When("I pass the url of products in the request")
     public void i_pass_the_url_of_products_in_the_request() {
-        // TAMBAHAN PENTING: Menyamar jadi Browser Chrome & set tipe data JSON
-        httpRequest = RestAssured.given()
+        response = RestAssured.given()
+                // --- INI KUNCINYA ---
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-                .header("Content-Type", "application/json")
-                .header("Accept", "*/*");
+                .header("Accept", "*/*")
+                // --------------------
+                .baseUri("https://reqres.in")
+                .when()
+                .get("/api/users/2")
+                .then()
+                .log().all() // Biar kita bisa lihat isi errornya kalau gagal lagi
+                .extract().response();
 //        response = httpRequest.get("products");
-        response = httpRequest.get("api/users");
+//        response = httpRequest.get("api/users");
     }
 
     @Then("I receive the response code as {}")
